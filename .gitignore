@@ -1,6 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atividades — Inovação</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg: #0f0f0f;
+      --surface: #181818;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --muted: #666;
+      --accent: #c8f542;
+      --accent-dim: rgba(200,245,66,0.08);
+    }
 
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0 0 6rem;
+    }
 
+    /* ── HEADER ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 3rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
 
-    } 
-}   
+    .header-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    header h1 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 300;
+      margin-top: 0.2rem;
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 3rem 3rem 0;
+    }
+
+    /* ── ATIVIDADE ── */
+    .atividade {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .atividade:hover { border-color: #444; }
+
+    .ativ-header {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      align-items: start;
+      gap: 0;
+    }
+
+    .ativ-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      padding: 1.4rem 0 0 1.5rem;
+    }
+
+    .ativ-info {
+      padding: 1.4rem 1.5rem 1.4rem 0;
+      border-left: 1px solid var(--border);
+    }
+
+    .ativ-status {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot-done { background: var(--accent); }
+    .dot-wip  { background: #f59e0b; animation: pulse 1.6s ease-in-out infinite; }
+    .dot-todo { background: var(--muted); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .status-done { color: var(--accent); }
+    .status-wip  { color: #f59e0b; }
+    .status-todo { color: var(--muted); }
+
+    .ativ-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.05rem;
+      font-weight: 500;
+      line-height: 1.3;
+      margin-bottom: 0.6rem;
+    }
+
+    .ativ-desc {
+      color: #aaa;
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    .ativ-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      padding: 3px 10px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* detail block */
+    .ativ-detail {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      padding: 1.2rem 1.5rem 1.2rem calc(56px + 1px);
+    }
+
+    .detail-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .detail-item span:first-child {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .detail-item span:last-child {
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    /* special highlight for current page */
+    .atividade.self {
+      border-color: rgba(200,245,66,0.25);
+      background: var(--accent-dim);
+    }
+
+    .self-note {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      padding: 0.6rem 1.5rem;
+      border-top: 1px dashed rgba(200,245,66,0.2);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      max-width: 860px;
+      margin: 3rem auto 0;
+      padding: 0 3rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    @media (max-width: 600px) {
+      header, main { padding-left: 1.5rem; padding-right: 1.5rem; }
+      footer { padding-left: 1.5rem; padding-right: 1.5rem; flex-direction: column; gap: 4px; }
+      .ativ-detail { padding-left: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="header-label">// matéria de inovação — 2026</span>
+  <h1>Catálogo de Atividades</h1>
+  <p>Registro das entregas e projetos desenvolvidos ao longo do trimestre.</p>
+</header>
+
+<main>
+
+  <!-- ── ATIVIDADE 01 ── -->
+  <article class="atividade">
+    <div class="ativ-header">
+      <span class="ativ-num">01</span>
+      <div class="ativ-info">
+        <div class="ativ-status status-done">
+          <span class="dot dot-done"></span> Concluída
+        </div>
+        <h2 class="ativ-title">Miniatura em Impressão 3D — Sabonete do Clube da Luta</h2>
+        <p class="ativ-desc">
+          Primeira atividade prática com impressora 3D: impressão de uma miniatura modelo escolhido: Sabonete icônico do filme <em>Clube da Luta</em>. O objetivo foi familiarizar com o fluxo completo de impressão 3D — desde o arquivo até o objeto físico.
+        </p>
+        <div class="ativ-tags">
+          <span class="tag">impressão 3d</span>
+          <span class="tag">prototipagem</span>
+          <span class="tag">miniatura</span>
+          <span class="tag">fdm</span>
+        </div>
+      </div>
+    </div>
+    <div class="ativ-detail">
+      <div class="detail-row">
+        <div class="detail-item">
+          <span>Ferramenta</span>
+          <span>Impressora 3D FDM</span>
+        </div>
+        <div class="detail-item">
+          <span>Resultado</span>
+          <span>Objeto físico impresso</span>
+        </div>
+        <div class="detail-item">
+          <span>Escala</span>
+          <span>Miniatura</span>
+        </div>
+        <div class="detail-item">
+          <span>Referência</span>
+          <span>Fight Club (1999)</span>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ── ATIVIDADE 02 ── -->
+  <article class="atividade">
+    <div class="ativ-header">
+      <span class="ativ-num">02</span>
+      <div class="ativ-info">
+        <div class="ativ-status status-wip">
+          <span class="dot dot-wip"></span> Em andamento
+        </div>
+        <h2 class="ativ-title">Dinossauro em Grande Escala — 3 metros com Impressão 3D</h2>
+        <p class="ativ-desc">
+          Projeto ambicioso de impressão 3D em grande escala: construção de um dinossauro de aproximadamente 3 metros, dividido em partes impressas separadamente e montadas. O projeto explora os limites da fabricação digital e da engenharia de montagem em escala real.
+        </p>
+        <div class="ativ-tags">
+          <span class="tag">impressão 3d</span>
+          <span class="tag">grande escala</span>
+          <span class="tag">montagem</span>
+          <span class="tag">dinossauro</span>
+        </div>
+      </div>
+    </div>
+    <div class="ativ-detail">
+      <div class="detail-row">
+        <div class="detail-item">
+          <span>Ferramenta</span>
+          <span>Impressora 3D FDM</span>
+        </div>
+        <div class="detail-item">
+          <span>Tamanho final</span>
+          <span>~3 metros</span>
+        </div>
+        <div class="detail-item">
+          <span>Método</span>
+          <span>Impressão em partes + montagem</span>
+        </div>
+        <div class="detail-item">
+          <span>Status</span>
+          <span>Em produção</span>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ── ATIVIDADE 03 ── -->
+  <article class="atividade self">
+    <div class="ativ-header">
+      <span class="ativ-num">03</span>
+      <div class="ativ-info">
+        <div class="ativ-status status-wip">
+          <span class="dot dot-wip"></span> Em andamento
+        </div>
+        <h2 class="ativ-title">Este Site — Catálogo Digital das Atividades</h2>
+        <p class="ativ-desc">
+          Desenvolvimento de um site estático em HTML e CSS para catalogar e documentar todas as atividades da matéria de Inovação. A proposta é criar um registro organizado e navegável das entregas do semestre — você está vendo o resultado agora.
+        </p>
+        <div class="ativ-tags">
+          <span class="tag">html</span>
+          <span class="tag">css</span>
+          <span class="tag">web</span>
+          <span class="tag">documentação</span>
+        </div>
+      </div>
+    </div>
+    <div class="ativ-detail">
+      <div class="detail-row">
+        <div class="detail-item">
+          <span>Tecnologia</span>
+          <span>HTML + CSS puro</span>
+        </div>
+        <div class="detail-item">
+          <span>Objetivo</span>
+          <span>Catalogar atividades</span>
+        </div>
+        <div class="detail-item">
+          <span>Atividades listadas</span>
+          <span>3</span>
+        </div>
+      </div>
+    </div>
+    <p class="self-note">→ você está aqui: esta página é a própria atividade 03</p>
+  </article>
+
+</main>
+
+<footer>
+  <span>inovação · 2026<span></span>
+  <span>3 atividades registradas</span>
+</footer>
+
+</body>
+</html>
