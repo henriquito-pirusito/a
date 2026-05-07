@@ -1,14 +1,5 @@
-public class Main {
-    public static void main(String[] args) {
-        String nome = "Henrique Moreira de Andrade";
-        int idade = 15;
-        String cidade = "Porto Alegre";
-        String materiaFavorita = "Inovação";
 
-        System.out.println("Nome: " + nome);
-        System.out.println("Idade: " + idade);
-        System.out.println("Cidade:" + cidade);
-        System.out.println("Materia favorita: " + materiaFavorita);
+
 
 
     } 
